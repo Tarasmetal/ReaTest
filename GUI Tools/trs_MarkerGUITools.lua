@@ -45,7 +45,7 @@ local info = debug.getinfo(1, 'S');
 local FontPath = info.source:match[[^@?(.*[\/])[^\/]-$]]
 dofile(reaper.GetResourcePath() .. '/Scripts/ReaTeam Extensions/API/imgui.lua') ('0.8.1') -- current version at the time of writing the script
 
--- local ctx = r.ImGui_CreateContext(windowTitle)
+--local ctx = r.ImGui_CreateContext(windowTitle)
 ctx = r.ImGui_CreateContext(windowTitle)
 local size = r.GetAppVersion():match('Win64') and 12 or 14
 -- local font = r.ImGui_CreateFont('Tahoma', 9)
@@ -154,13 +154,19 @@ if not widgets.cheads then
         r.ImGui_SameLine(ctx)
         btnCmdCol('Del M', '40613', 'Markers: Delete marker at cursor', 7.5,0)
         r.ImGui_SameLine(ctx)
-        btnCmdCol('Del all M', '_SWSMARKERLIST9', 'Markers: Delete all Markers', 7,0)
+        btnCmdCol('Del M all', '_SWSMARKERLIST9', 'Markers: Delete all Markers', 7,0)
         r.ImGui_SameLine(ctx)
         r.ImGui_TextDisabled(ctx, '|')
         r.ImGui_SameLine(ctx)
         btnCmdCol('Del R', '40615', 'Regions: Delete region at cursor', 7.5,0)
         r.ImGui_SameLine(ctx)
-        btnCmdCol('Del all R', '_SWSMARKERLIST10', 'Regions: Delete all Regions', 7,0)
+        btnCmdCol('Del R all', '_SWSMARKERLIST10', 'Regions: Delete all Regions', 7,0)
+        r.ImGui_SameLine(ctx)
+        r.ImGui_TextDisabled(ctx, '|')
+        r.ImGui_SameLine(ctx)
+        btnFuncCol('Inx Add', 'MarkerReNameIndex', 'Set all markers new index', 9,0) -- Load lua file script
+        r.ImGui_SameLine(ctx)
+        btnFuncCol('Inx Rem', 'MarkerDelIndex', 'Delete all markers index', 4,0) -- Load lua file script
         r.ImGui_SameLine(ctx)
         r.ImGui_TextDisabled(ctx, '|')
         r.ImGui_SameLine(ctx)
@@ -175,17 +181,17 @@ if not widgets.cheads then
         btnCmdCol('R << M', '_SWSMARKERLIST14','Convert all Regions to Markers', 5.0,0)
         r.ImGui_SameLine(ctx) r.ImGui_TextDisabled(ctx, '|')r.ImGui_SameLine(ctx)
         -- btnSCRCol('File Load', 'Taras\\Tools\\trs_TrackReNameTools.lua', 'Script Load', 6.5,0) -- Load lua file script
-        -- btnFuncCol('Set 00', 'setStartEndMarkers','Set start 0:00:00 at edit cursor', 0,0)
         btnFuncCol('Set 00', 'setTimecodeZero', 'Set start 0:00:00 at edit cursor', 0,0) -- Load lua file script
         r.ImGui_SameLine(ctx)
         btnFuncCol('Bck 00', 'resetProjBackTime', 'Jump cursor to 0:00:00', 8,0) -- Load lua file script
         r.ImGui_SameLine(ctx)
         btnFuncCol('Rst 00', 'resetProjStartTime', 'Reset project start time', 9,0) -- Load lua file script
         r.ImGui_SameLine(ctx) r.ImGui_TextDisabled(ctx, '|')r.ImGui_SameLine(ctx)
-        btnFuncCol('REC', 'setMarker666', 'Insert REC 666 Marker', 0,0) -- Red -- Load lua file script
-        r.ImGui_SameLine(ctx)
-        btnFuncCol('BCK', 'goToMarker666', 'Go to REC 666 Marker', 9,0) -- Green -- Load lua file script
-        r.ImGui_SameLine(ctx) r.ImGui_TextDisabled(ctx, '|')r.ImGui_SameLine(ctx)
+        -- работающие за комментированное кнопки
+        -- btnFuncCol('REC', 'setMarker666', 'Insert REC 666 Marker', 0,0) -- Red -- Load lua file script
+        -- r.ImGui_SameLine(ctx)
+        -- btnFuncCol('BCK', 'goToMarker666', 'Go to REC 666 Marker', 9,0) -- Green -- Load lua file script
+        -- r.ImGui_SameLine(ctx) r.ImGui_TextDisabled(ctx, '|')r.ImGui_SameLine(ctx)
         r.ImGui_SameLine(ctx)
         btnCmdCol('+ T', '40256','Insert tempo/time sig. change marker at edit cursor...', 5.0,0)
         r.ImGui_SameLine(ctx)
@@ -212,9 +218,9 @@ if not widgets.cheads then
         r.ImGui_Spacing(ctx)
         r.ImGui_Text(ctx, '<')
         r.ImGui_SameLine(ctx)
-        	local col = 6
+          local col = 6
            r.ImGui_PushID(ctx, col)
-		       r.ImGui_PushStyleColor(ctx, r.ImGui_Col_Button(),        trs_HSV(col / 7.0, 0.6, 0.6, 1.0))
+           r.ImGui_PushStyleColor(ctx, r.ImGui_Col_Button(),        trs_HSV(col / 7.0, 0.6, 0.6, 1.0))
            r.ImGui_PushStyleColor(ctx, r.ImGui_Col_ButtonHovered(), trs_HSV(col / 7.0, 0.7, 0.7, 1.0))
            r.ImGui_PushStyleColor(ctx, r.ImGui_Col_ButtonActive(),  trs_HSV(col / 7.0, 0.8, 0.8, 1.0))
 
@@ -249,7 +255,7 @@ if not widgets.cheads then
         end
         local col = i
            r.ImGui_PushID(ctx, col)
-		       r.ImGui_PushStyleColor(ctx, r.ImGui_Col_Button(),        trs_HSV(col / 7.0, 0.6, 0.6, 0.6))
+           r.ImGui_PushStyleColor(ctx, r.ImGui_Col_Button(),        trs_HSV(col / 7.0, 0.6, 0.6, 0.6))
            r.ImGui_PushStyleColor(ctx, r.ImGui_Col_ButtonHovered(), trs_HSV(col / 7.0, 0.7, 0.7, 1.0))
            r.ImGui_PushStyleColor(ctx, r.ImGui_Col_ButtonActive(),  trs_HSV(col / 7.0, 0.8, 0.8, 1.0))
 
@@ -279,7 +285,7 @@ if not widgets then
               end
              else
           if r.ImGui_Button(ctx, buttonText) then
-             	insertMarkerNoID(buttonText, color)
+               insertMarkerNoID(buttonText, color)
           end
           if r.ImGui_IsItemHovered(ctx) then
                 r.ImGui_BeginTooltip(ctx)
@@ -300,9 +306,9 @@ if not widgets then
         r.ImGui_Text(ctx, '|')
         r.ImGui_SameLine(ctx)
 
-			local col = 6
+      local col = 6
            r.ImGui_PushID(ctx, col)
-		   r.ImGui_PushStyleColor(ctx, r.ImGui_Col_Button(),        trs_HSV(col / 7.0, 0.6, 0.6, 1.0))
+       r.ImGui_PushStyleColor(ctx, r.ImGui_Col_Button(),        trs_HSV(col / 7.0, 0.6, 0.6, 1.0))
            r.ImGui_PushStyleColor(ctx, r.ImGui_Col_ButtonHovered(), trs_HSV(col / 7.0, 0.7, 0.7, 1.0))
            r.ImGui_PushStyleColor(ctx, r.ImGui_Col_ButtonActive(),  trs_HSV(col / 7.0, 0.8, 0.8, 1.0))
 

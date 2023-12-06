@@ -93,6 +93,10 @@ function hex2rgb(HEX_COLOR)
     local hex = HEX_COLOR:sub(2)
     return '0x' .. hex .. 'FF'
 end
+
+
+
+
 ------------------------------------------------------------------------------------------------------------------
 function main(text)
 
@@ -131,13 +135,23 @@ function main(text)
             input  = ProcessKeyword(input, number, "/I")
         end
 
+        -- if string.find(input, "/M") then
+        --         -- получить позицию элемента
+        --         item_pos = reaper.GetMediaItemInfo_Value(item, "D_POSITION")
+        --         -- получить индекс маркера, рядом с которым находится элемент
+        --         markeridx, regionidx = reaper.GetNearestMarkerAndCurRegion( 0, item_pos )
+        --         -- получить имя маркера по индексу
+        --         retval, isrgn, pos, rgnend, name, idx = reaper.EnumProjectMarkers( markeridx )
+        --         input  = ProcessKeyword(input, number, "/M")
+        -- end
+
         input = input:gsub("/T", track_name)
         input = input:gsub("/t", tostring(track_id))
         item_pos = reaper.GetMediaItemInfo_Value(item, "D_POSITION")
         markeridx, regionidx = reaper.GetLastMarkerAndCurRegion( 0, item_pos )
         retval, isrgn, pos, rgnend, name, idx = reaper.EnumProjectMarkers( regionidx )
         input = input:gsub("/r", name )
-
+        -- input = input:gsub("/M", name ) -- добавлено
         notes = reaper.ULT_GetMediaItemNote(item)
         input = input:gsub("$notes", notes )
         input = input:gsub("\\n", "\r\n" )
@@ -148,7 +162,7 @@ function main(text)
 
     reaper.Undo_EndBlock("Add text to selected items notes (Items Names Processor)", -1) -- End of the undo block. Leave it at the bottom of your main function
 
-end -- end of function
+end
 
 ------------------------------------------------------------------------------------------------------------
 function notes_to_names() -- local (i, j, item, take, track)
@@ -194,5 +208,31 @@ end
 
 -- delete() -- Execute your main function
 ------------------------------------------------------------------------------------------------------------
+function btnFuncCol(name, funcName, helpText, col, i)
+           r.ImGui_PushID(ctx, col)
+           r.ImGui_PushStyleColor(ctx, r.ImGui_Col_Button(),        trs_HSV(col / 7.0, 0.6, 0.6, 1.0))
+           r.ImGui_PushStyleColor(ctx, r.ImGui_Col_ButtonHovered(), trs_HSV(col / 7.0, 0.7, 0.7, 1.0))
+           r.ImGui_PushStyleColor(ctx, r.ImGui_Col_ButtonActive(),  trs_HSV(col / 7.0, 0.8, 0.8, 1.0))
+           if r.ImGui_Button(ctx, ''..name..'') then
+              click_count, text = 0, funcName
+              if funcName ~= '' then
+                _G[funcName]() -- Вызываем функцию по имени переменной idCmd
+              end
+              click_count = click_count + 1
+           end
+            r.ImGui_PopStyleColor(ctx, 3)
+            r.ImGui_PopID(ctx)
+
+          if r.ImGui_IsItemHovered(ctx) then
+          r.ImGui_BeginTooltip(ctx)
+           r.ImGui_PushTextWrapPos(ctx, r.ImGui_GetFontSize(ctx) * 35.0)
+               if helpText ~= '' then
+           r.ImGui_TextColored(ctx, hex2rgb('#C7C7C7'), helpText)
+               end
+           r.ImGui_PopTextWrapPos(ctx)
+           r.ImGui_EndTooltip(ctx)
+            end
+                return
+end
 reaper.UpdateArrange() -- Update the arrangement (often needed)
 reaper.PreventUIRefresh(-1)

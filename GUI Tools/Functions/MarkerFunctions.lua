@@ -9,8 +9,14 @@
 --   # Marker Functions
 -- @changelog
 --  + Code optimizations
-
 local r = reaper
+
+function msg(value)
+  if console then
+    r.ShowConsoleMsg(tostring(value) .. "\n")
+  end
+end
+
 -- таблица с кодами цветов
 col_arr = {
     blue = {0,0,255},
@@ -25,7 +31,7 @@ col_arr = {
     lightgreen = {125,255,155},
     pink = {225,0,255},
     brown = {125,95,25},
-    gray = {192,192,192},
+    gray = {125,125,125},
     white =  {255,255,255},
     black =  {0,0,0},
 }
@@ -485,11 +491,6 @@ console = false -- true/false: display debug messages in the console
 -- msg("OFF ♦ "..(sec).." • "..(cmd).." • "..(mode).." • "..(resolution).." • "..(val).." ♦ ")
 
 -- Display a message in the console for debugging
-function msg(value)
-  if console then
-    r.ShowConsoleMsg('♦ '.. tostring(value) .. " ♦" .. "\n")
-  end
-end
 msg(''..d_text..'')
 
 -- END OF USER CONFIG AREA --
@@ -531,60 +532,52 @@ r.Undo_EndBlock(d, -1) -- для того, чтобы можно было отм
 end
 ------------------------------------------------------------------------------------------------------------------
 
--- function insertMarkerEnd(name,color)
+function MarkerReNameIndex()
+  local marker_count = r.CountProjectMarkers(0)
+  local marker_names = {}
 
--- local marker_num = reaper.CountProjectMarkers(0)
+  for i = 0, marker_count - 1 do
+    local _, isrgn, pos, rgnend, name, markrgnindexnumber = r.EnumProjectMarkers(i)
+    if not isrgn then
+      local new_name = name:gsub("%s+%d+", "")
 
--- for i=0, marker_num do
---      local _, _, pos, _, name, id = reaper.EnumProjectMarkers(i)
---     if name == "=END" then
---         -- reaper.SetEditCurPos(pos, true, false)
---         reaper.DeleteProjectMarker(0, true, 0)
---         -- r.DeleteProjectMarker(0, id, 0)
---     end
---         r.AddProjectMarker2(0,0,pos,0, name, 0, r.ColorToNative(table.unpack(color))|0x1000000)
--- end
+      if marker_names[new_name] then
+        marker_names[new_name] = marker_names[new_name] + 1
+        new_name = new_name  .. " " ..  marker_names[new_name]
+      else
+        marker_names[new_name] = 0
+      end
+        -- marker_names[new_name]
+      if new_name ~= name then
+        r.SetProjectMarkerByIndex(0, i, isrgn, pos, rgnend, markrgnindexnumber, new_name, 0)
+          -- msg(name .. " - " .. new_name)
+      end
+    end
+  end
+  r.UpdateArrange()
+end
 
--- if reaper.GetPlayState() == 1 then -- if playback is on
---     reaper.OnPlayButton() -- press play to move the play cursor to the edit cursor
--- end
+function MarkerDelIndex()
+  local numMarkers = r.CountProjectMarkers(0)
+  for i = 0, numMarkers - 1 do
+    local _, isrgn, pos, rgnend, name, markrgnindexnumber, color = r.EnumProjectMarkers3(0, i)
+    local firstWord = name:match("([^%s]+)")
+    if not isrgn then
+      r.DeleteProjectMarkerByIndex(0, markrgnindexnumber)
+      r.AddProjectMarker2(0, false, pos, 0, firstWord, -1, color)
+    end
+  end
+  r.UpdateArrange()
+end
 
- -- if color == nil or color == '' then
- --            color = reaper.ColorToNative(0,0,0)|0x0000000
- --        else
- --            color = reaper.ColorToNative(table.unpack(color))|0x1000000
- --        end
 
--- r.AddProjectMarker2(0,0,pos,0, name, 0, color)
--- reaper.Undo_EndBlock('Set Marker • ' .. name, -1)
--- reaper.UpdateArrange()
-
--- function NoUndoPoint() end
--- reaper.defer(NoUndoPoint)
--- end
-
--- function insertMarkerEnd(name, color, col_arr)
---     local cursor_pos = reaper.GetCursorPosition()
---     local marker_count = reaper.CountProjectMarkers(0)
---     for m = 0, marker_count-1 do
---         _, _, _, _, name, marker_id = reaper.EnumProjectMarkers(m)
-
---         if name == "=END" then
---             marker_exists = 1
---             break
---         end
---     end
---     reaper.Undo_BeginBlock2(0)
---     if marker_exists then
---         reaper.SetProjectMarker(marker_id, false, cursor_pos, 0, "=END")
---     else
---         if color == nil or '' then
---         color = reaper.ColorToNative(255,0,255)|0x0000000
---     else
---         color = reaper.ColorToNative(table.unpack(col_arr[color]))|0x1000000
---     end
---         reaper.AddProjectMarker(0, false, cursor_pos, 0, "=END", -1, color)
---     end
---     reaper.Undo_EndBlock2(0, "trs_Set END marker", -1)
---     reaper.UpdateArrange()
+-- function MarkerDelIndex()
+--   local numMarkers = r.CountProjectMarkers(0)
+--   for i = 0, numMarkers - 1 do
+--     local _, _, pos, _, name, _ = r.EnumProjectMarkers(i)
+--     local firstWord = name:match("([^%s]+)")
+--     r.DeleteProjectMarkerByIndex(0, i)
+--     r.AddProjectMarker2(0, false, pos, 0, firstWord, i, 1)
+--   end
+--   r.UpdateArrange()
 -- end

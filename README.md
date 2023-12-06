@@ -52,21 +52,12 @@
 
 Осталось вставить ссылку в окно импорта 👇👇👇
 
-        https://github.com/Tarasmetal/ReaScripts/raw/master/index.xml
+    https://github.com/Tarasmetal/ReaScripts/raw/master/index.xml
 
 [![Screenshot](img/repo_import.png)](img/repo_import.png)
 
 ### 🟠 **Пример работы скрипта**
-
-    Например, если у вас есть 2 маркера с названием [Припев 1, Припев 2] то,
-    следующий маркер будет иметь название [Припев 3]) - все просто.
-    Скрипт специально сделан так, чтобы вы уделили,
-    как можно больше времени творчеству,
-    если вы будете рандомно выставлять имена маркеров,
-    как вам вздумается, то индексы не собьюся,
-    поэтому порядок разметки трекинга - вообще не важен.
-    Делайте, как вам удобно и все.
-
+[![Marker GUI Tools Demo](img/trs_MarkerTools_demo.gif)](img/trs_MarkerTools_demo.gif)
 ## `<3 Special THX:`
 
 [**MPL**](https://vk.com/michael_pilyavskiy), [**SuperMaximus**](https://vk.com/maxsalkov), [**Aleksey** **Bezborodov**](https://vk.com/epitaph666).
