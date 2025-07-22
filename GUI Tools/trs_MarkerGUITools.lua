@@ -1,6 +1,6 @@
 -- @description Marker GUI Tools
 -- @author Taras Umanskiy
--- @version 1.0
+-- @version 1.3
 -- @metapackage
 -- @provides [main] .
 -- @link http://vk.com/tarasmetal

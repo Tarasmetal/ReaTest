@@ -1,6 +1,6 @@
 -- @description Label GUI Tools
 -- @author Taras Umanskiy
--- @version 1.0
+-- @version 1.3
 -- @metapackage
 -- @provides [main] .
 -- @link https://github.com/Tarasmetal/ReaScripts
