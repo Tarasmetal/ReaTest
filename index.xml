@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Taras Scripts" commit="8e3b3588d68a327e2cef95fd5ac2b58667909cad">
+<index version="1" name="Taras Scripts" commit="d7aef2080851bb311720aac5bccde576afe963f0">
   <category name="GUI Tools">
     <reapack name="trs_LabelGUITools.lua" type="script" desc="Label GUI Tools">
       <metadata>
@@ -18,6 +18,10 @@
         <changelog><![CDATA[+ Code Fixies]]></changelog>
         <source main="main">https://github.com/Tarasmetal/ReaTest/raw/8e3b3588d68a327e2cef95fd5ac2b58667909cad/GUI%20Tools/trs_LabelGUITools.lua</source>
       </version>
+      <version name="1.3" author="Taras Umanskiy" time="2025-07-22T02:24:32Z">
+        <changelog><![CDATA[+ Code Fixies]]></changelog>
+        <source main="main">https://github.com/Tarasmetal/ReaTest/raw/d7aef2080851bb311720aac5bccde576afe963f0/GUI%20Tools/trs_LabelGUITools.lua</source>
+      </version>
     </reapack>
     <reapack name="trs_MarkerGUITools.lua" type="script" desc="Marker GUI Tools">
       <metadata>
@@ -35,6 +39,10 @@
       <version name="1.0" author="Taras Umanskiy" time="2025-07-22T02:18:21Z">
         <changelog><![CDATA[+ Code Fixies]]></changelog>
         <source main="main">https://github.com/Tarasmetal/ReaTest/raw/8e3b3588d68a327e2cef95fd5ac2b58667909cad/GUI%20Tools/trs_MarkerGUITools.lua</source>
+      </version>
+      <version name="1.3" author="Taras Umanskiy" time="2025-07-22T02:24:32Z">
+        <changelog><![CDATA[+ Code Fixies]]></changelog>
+        <source main="main">https://github.com/Tarasmetal/ReaTest/raw/d7aef2080851bb311720aac5bccde576afe963f0/GUI%20Tools/trs_MarkerGUITools.lua</source>
       </version>
     </reapack>
   </category>
