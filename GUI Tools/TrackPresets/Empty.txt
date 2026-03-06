@@ -1,0 +1,12 @@
+Kick,in,,,,,false,#60E449
+Kick,out,,,,,false,#47E44B
+Snare,Top,,,,,false,#45E363
+Snare,Bot,,,,,false,#43E37C
+HiHat,,,,,,false,#41E396
+Tom,1,,,,,false,#3FE3B1
+Tom,2,,,,,false,#3DE2CC
+Ride,L,,,,,false,#3BDDE2
+Crash,L,,,,,false,#39C0E2
+China,R,,,,,false,#37A3E2
+OH,,,,,,false,#3585E1
+RM,,,,,,false,#3266E1
